@@ -1,0 +1,13 @@
+.layout {
+  max-width: 100%;
+  .main {
+    padding-top: 50px;
+    background-color: #f9f9f9;
+    min-height: calc(100vh - 101px);
+
+    .mainWrapper {
+      width: 80%;
+      margin: 0 auto;
+    }
+  }
+}
