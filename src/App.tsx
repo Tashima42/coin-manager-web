@@ -1,5 +1,4 @@
-import React, { FC, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { FC } from "react";
 import AppRoutes from "./components/routes/AppRoutes";
 import FallbackComponent from "./components/errorFallback/FallbackComponent";
 import { ErrorBoundary } from "react-error-boundary";

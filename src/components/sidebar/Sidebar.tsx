@@ -2,16 +2,13 @@ import { FC, useState } from "react";
 import "./sidebar.scss";
 import InfoIcon from "@mui/icons-material/Info";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import ModalWindow from "../modalWindow/ModalWindow";
 
 const Sidebar: FC = () => {
-  const { isAuth } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState<boolean>(false);
   const handleClick = (path: string) => {
-    if (isAuth) {
+    if (true) {
       return navigate(`/${path}`);
     } else {
       setShowModal(true);

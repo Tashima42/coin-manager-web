@@ -11,10 +11,14 @@
 
   .button-column {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    height: 50px;
     
     Button {
       margin-bottom: 5px;
+      width: 150px;
+      margin-left: 20px;
+      margin-right: 0;
     }
   }
 }

@@ -15,7 +15,9 @@ const Listings: FC = () => {
         </Link>
       </div>
     </div>
-        <Card name="Coin" description="Description"/>
+        <Link to={"/listing/1"} className={"link"}>
+          <Card name="Coin" description="Description"/>
+        </Link>
         <Card name="Coin" description="Description"/>
         <Card name="Coin" description="Description"/>
         <Card name="Coin" description="Description"/>

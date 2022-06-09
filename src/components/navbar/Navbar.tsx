@@ -2,17 +2,11 @@ import { FC } from "react";
 import "./navbar.scss";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setIsAuth } from "../../store/reducers/auth/action-creators";
-import { useAppSelector } from "../../hooks";
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
-  const { isAuth } = useAppSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(setIsAuth(false));
     navigate("/login");
   };
 
@@ -26,7 +20,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
         <div className={"right"}>
-          {isAuth ? (
+          {true ? (
             <button onClick={handleClick} className={"signupButton"}>
               Log out
             </button>

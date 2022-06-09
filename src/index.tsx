@@ -4,8 +4,6 @@ import App from "./App";
 import "./index.scss";
 import Layout from "./components/layout/Layout";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "./store";
 import Loader from "./components/loader/Loader";
 
 const root = ReactDOM.createRoot(
@@ -14,12 +12,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <Layout>
-        <Suspense fallback={<Loader />}>
-          <App />
-        </Suspense>
-      </Layout>
-    </Provider>
+    <Layout>
+      <Suspense fallback={<Loader />}>
+        <App />
+      </Suspense>
+    </Layout>
   </BrowserRouter>
 );

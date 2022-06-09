@@ -1,14 +1,13 @@
 import { FC, useEffect} from 'react';
-import './create-listing.scss'
+import './listing.scss'
 import Button from "../../components/common/button/Button";
 import FormGroup from "../../components/common/formGroup/FormGroup";
 import ComboBox from "../../components/common/ComboBox/ComboBox"
-import Hr from "../../components/common/hr/Hr";
 import {CircularProgress} from "@mui/material";
 import {Navigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 
-const CreateListing: FC = () => {
+const Listing: FC = () => {
     const {isLoading, error, isAuth} = {isLoading: false, error: null, isAuth: false};
     const {register, handleSubmit, formState: {errors}} = useForm()
 
@@ -21,42 +20,12 @@ const CreateListing: FC = () => {
     return (
         <div className={'create-listing'}>
             {isAuth && <Navigate to={'/'}/>}
-            <h2 className={'listing-title'}>Criar Anúncio</h2>
-            <Hr dataContent={'criar anuncio'}/>
+            <h2 className={'listing-title'}>Titulo do Anuncio</h2>
+            <p>Descricao do anuncio</p>
             {error && <div className={'registerError'}> {error}
             </div>}
             <div className={'listingForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <FormGroup
-                        fieldName={'Titutlo'}
-                        register={register}
-                        errors={errors}
-                        placeholder={'Adicione um titulo...'}
-                        isRequired={true}
-                        type="text"
-                    />
-                    <FormGroup
-                        fieldName={'Descricao'}
-                        register={register}
-                        errors={errors}
-                        placeholder={'Adicione uma descricao...'}
-                        isRequired={false}
-                        type={'text'}
-                    />
-                    <ComboBox
-                        fieldName={'Tipo'}
-                        register={register}
-                        errors={errors}
-                        isRequired={true}
-                        options={[{value: 'sell', displayText: 'Venda' }, {value: 'trade', displayText: 'Troca'}]}
-                    />
-                    <ComboBox
-                        fieldName={'Moeda'}
-                        register={register}
-                        errors={errors}
-                        isRequired={true}
-                        options={[{value: 1, displayText: 'Moeda 1' }, {value: 2, displayText: 'Moeda 2'}]}
-                    />
                     <FormGroup
                         fieldName={'Valor'}
                         register={register}
@@ -66,12 +35,44 @@ const CreateListing: FC = () => {
                         type={'number'}
                         min="1"
                         step="any"
+                        value="100.00"
+                        readonly={true}
+                    />
+                    <ComboBox
+                        fieldName={'Tipo'}
+                        register={register}
+                        errors={errors}
+                        isRequired={true}
+                        readonly={true}
+                        options={[{value: 'trade', displayText: 'Troca'}]}
+                    />
+                    <ComboBox
+                        fieldName={'Moeda'}
+                        register={register}
+                        errors={errors}
+                        isRequired={true}
+                        readonly={true}
+                        options={[{value: 1, displayText: 'Moeda 1' }]}
+                    />
+                    <ComboBox
+                        fieldName={'Moeda de Troca'}
+                        register={register}
+                        errors={errors}
+                        isRequired={false}
+                        options={[{value: 1, displayText: 'Moeda 1' }, {value: 2, displayText: 'Moeda 2'}]}
+                    />
+                    <ComboBox
+                        fieldName={'Metodo de pagamento'}
+                        register={register}
+                        errors={errors}
+                        isRequired={true}
+                        options={[{value: 'credit-card', displayText: 'Cartao de Credito' }, {value: 'pix', displayText: 'Pix'}]}
                     />
                     <Button
                         type={'submit'}
                         progress={isLoading ?
                             <CircularProgress style={{color: 'white'}} size={20}/> : null}
-                        text={'Criar'}
+                        text={'Comprar'}
                     />
                 </form>
             </div>
@@ -79,4 +80,4 @@ const CreateListing: FC = () => {
     );
 };
 
-export default CreateListing;
+export default Listing;

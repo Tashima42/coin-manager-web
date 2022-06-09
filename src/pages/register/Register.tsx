@@ -3,25 +3,18 @@ import './register.scss'
 import FormGroup from "../../components/common/formGroup/FormGroup";
 import Button from "../../components/common/button/Button";
 import Hr from "../../components/common/hr/Hr";
-import {useDispatch} from "react-redux";
-import {registration, setError} from "../../store/reducers/auth/action-creators";
 import {Navigate} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {useAppSelector, useTitle} from "../../hooks";
 import {useForm} from "react-hook-form";
 
 const Register: FC  = () => {
-    const {isLoading, error, isAuth} = useAppSelector(state => state.auth)
+    const {isLoading, error, isAuth} = {isLoading: false, error: null, isAuth: false};
     const {register, handleSubmit, formState: {errors}} = useForm()
-    const dispatch = useDispatch()
-    useTitle('Register')
 
     useEffect(() => {
-        dispatch(setError(''))
-    }, [dispatch])
+    }, [])
 
     const onSubmit = (data: any) => {
-        dispatch(registration(data['Name'], data['Username'],data['Password']))
     }
 
     return (

@@ -1,0 +1,56 @@
+.receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.receipt-body {
+  margin: 0 100px 0 100px;
+  margin-top: 10px;
+  background-color: #eaebe6;
+  border-radius: 5px;
+  padding: 20px;
+  width: 450px;
+
+  .receipt-body-title {
+    margin-bottom: 30px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Source Code Pro', monospace;
+  }
+  .description {
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .receipt-body-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .labels {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-family: 'Source Code Pro', monospace;
+  }
+  p {
+    font-family: 'Source Code Pro', monospace;
+  }
+}
+
+.receipt-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  Button {
+    width: 100px;
+  }
+}
+
