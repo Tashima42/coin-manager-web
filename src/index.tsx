@@ -10,6 +10,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+if(typeof localStorage.getItem("token") !== "string") {
+  localStorage.setItem("token", "");
+}
+
 root.render(
   <BrowserRouter>
     <Layout>
