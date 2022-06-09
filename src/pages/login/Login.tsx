@@ -4,28 +4,33 @@ import Button from "../../components/common/button/Button";
 import FormGroup from "../../components/common/formGroup/FormGroup";
 import Hr from "../../components/common/hr/Hr";
 import {CircularProgress} from "@mui/material";
-import {Navigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import UserService from "../../services/user-service"
+import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
-    const {isLoading, error, isAuth} = {isLoading: false, error: null, isAuth: false};
+    const userService = new UserService();
+    const navigate = useNavigate();
+    let isLoading = false
     const {register, handleSubmit, formState: {errors}} = useForm()
 
-    useEffect(() => {
-    }, [])
-
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
+      isLoading = true
+      const success = await userService.login(data.Username, data.Password)
+      if(success) {
+        isLoading = false
+        navigate("/collections", { replace: true })
+      } else {
+        alert("Invalid username or password")
+        isLoading = false
+      }
     }
 
 
     return (
         <div className={'login'}>
-            {isAuth && <Navigate to={'/'}/>}
             <h2 className={'loginTitle'}>Bem vindo ao Coin Manager</h2>
             <Hr dataContent={'Login'}/>
-            {error && <div className={'registerError'}>
-                {error}
-            </div>}
             <div className={'loginForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup

@@ -5,8 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
+  const token = localStorage?.getItem("token")
+  const isLoggedIn = token!.length > 0 ? true : false;
+  console.log({isLoggedIn})
 
   const handleClick = () => {
+    localStorage.setItem("token", "")
     navigate("/login");
   };
 
@@ -20,7 +24,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
         <div className={"right"}>
-          {true ? (
+          {isLoggedIn ? (
             <button onClick={handleClick} className={"signupButton"}>
               Log out
             </button>

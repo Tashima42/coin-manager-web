@@ -1,27 +1,16 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import "./collections.scss";
 import Card from "../../components/card/Card"
 import Button from "../../components/common/button/Button"
+import CollectionService from "../../services/collection-service"
 
 const Collections: FC = () => {
-      const collections = [
-      {
-        id: 1,
-        name: "Коллекция 1",
-        description: "Описание коллекции 1",
-      },
-      {
-        id: 2,
-        name: "Коллекция 2",
-        description: "Описание коллекции 2",
-      },
-      {
-        id: 3,
-        name: "Коллекция 3",
-        description: "Описание коллекции 3",
-      }
-      ]
+  const collectionService = new CollectionService()
+  const [collections, setCollections] = useState<any[]>([])
+    collectionService.userCollections().then(collections => {
+      setCollections(collections)
+    })
   return (
     <div className={"collections"}>
     <div className="collections-header">
