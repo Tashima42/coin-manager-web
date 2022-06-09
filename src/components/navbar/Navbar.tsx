@@ -7,7 +7,6 @@ const Navbar: FC = () => {
   const navigate = useNavigate();
   const token = localStorage?.getItem("token")
   const isLoggedIn = token!.length > 0 ? true : false;
-  console.log({isLoggedIn})
 
   const handleClick = () => {
     localStorage.setItem("token", "")

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import {FC} from "react";

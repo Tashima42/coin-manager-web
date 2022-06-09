@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = "http://localhost:3890";
+export const API_URL = "https://coin-manager.tashima.click";
 
 const api = axios.create({
   withCredentials: true,

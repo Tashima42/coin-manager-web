@@ -5,11 +5,11 @@ import FormGroup from "../../components/common/formGroup/FormGroup";
 import ComboBox from "../../components/common/ComboBox/ComboBox"
 import Hr from "../../components/common/hr/Hr";
 import {CircularProgress} from "@mui/material";
-import {Navigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 
 const CreateListing: FC = () => {
-    const {isLoading, error, isAuth} = {isLoading: false, error: null, isAuth: false};
+    let isLoading = false
+    let error = null
     const {register, handleSubmit, formState: {errors}} = useForm()
 
     useEffect(() => {
@@ -20,7 +20,6 @@ const CreateListing: FC = () => {
 
     return (
         <div className={'create-listing'}>
-            {isAuth && <Navigate to={'/'}/>}
             <h2 className={'listing-title'}>Criar Anúncio</h2>
             <Hr dataContent={'criar anuncio'}/>
             {error && <div className={'registerError'}> {error}

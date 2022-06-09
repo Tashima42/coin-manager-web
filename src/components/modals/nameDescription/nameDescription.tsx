@@ -1,0 +1,58 @@
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import {FC} from "react";
+import './addCoin.scss'
+import Button from "../../common/button/Button";
+import CloseIcon from '@mui/icons-material/Close';
+import {Fade, CircularProgress} from "@mui/material";
+import ComboBox from "../../common/ComboBox/ComboBox"
+import {useForm} from "react-hook-form";
+
+
+interface ModalWindowProps{
+    showModal: boolean;
+    setShowModal: (isOpen: boolean) => any;
+}
+
+const NameDescription: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
+    const {register, handleSubmit, formState: {errors}} = useForm()
+    let isLoading = false
+    let error = null
+    const onSubmit = (data: any) => { }
+    return (
+        <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={showModal}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{timeout: 500,}}
+            >
+                <Fade style={{outline: 'none'}} in={showModal}>
+                    <div className={'modalAddCoin'}>
+                        <div className={'modalAddCoinTitle'}>
+                            <h3>Adicione uma moeda a colecao</h3>
+                            <span onClick={() => setShowModal(false)}><CloseIcon/></span>
+                        </div>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <ComboBox
+                                fieldName={'Moeda'}
+                                register={register}
+                                errors={errors}
+                                isRequired={true}
+                                options={[{value: 1, displayText: 'Moeda 1' }, {value: 2, displayText: 'Moeda 2'}]}
+                            />
+                            <Button
+                                type={'submit'}
+                                progress={isLoading ?
+                                    <CircularProgress style={{color: 'white'}} size={20}/> : null}
+                                text={'Criar'}
+                            />
+                        </form>
+                    </div>
+                </Fade>
+        </Modal>
+    );
+}
+export default NameDescription
+

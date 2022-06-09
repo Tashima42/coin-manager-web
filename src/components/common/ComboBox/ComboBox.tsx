@@ -15,7 +15,7 @@ const ComboBox = (props: any) => {
               name={fieldName} 
               {...register(fieldName, {required: {value: isRequired, message: 'Required field'}})}
             >
-              {options.map((option: any) => <option key={option.value} value={option.value}>{option.displayText}</option>)}
+              {options.map((option: any, id: number) => <option key={id} value={option.value}>{option.displayText}</option>)}
             </select>
         </div>
     );
