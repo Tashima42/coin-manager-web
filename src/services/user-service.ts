@@ -1,20 +1,27 @@
-import api from "../http";
-import {IUser} from "../types/user-type";
 import {AxiosResponse} from "axios";
+import api from "../http/index";
+import {AppDispatch} from "../store";
+import {setError, setIsLoading, setUser} from "../store/reducers/auth/action-creators";
 
-export default class UserService{
+export default class UserService {
+  static async userProfile(): Promise<AxiosResponse> {
+    return api.get('/user')
+  }
 
-    static async updateUser(userId: number, firstName: string, lastName: string, username: string, picture?: any): Promise<AxiosResponse<IUser>>{
-        const formData = new FormData()
-        formData.append('userId', userId.toString())
-        formData.append('firstName', firstName)
-        formData.append('lastName', lastName)
-        formData.append('email', email)
-        if(picture){
-            console.log('picture')
-            formData.append('picture', picture)
-        }
+  static getUserProfile = (dispatch: AppDispatch, response: any) => {
+    dispatch(setUser(response.data.userProfile))
+    dispatch(setIsLoading(false))
+    dispatch(setError(''))
+  }
 
-        return api.put<IUser>('/auth/update', formData)
+  static catchAuthorizationError = (dispatch: AppDispatch, e: any) => {
+    if (e.response) {
+      if (Array.isArray(e.response.data.message)) {
+        dispatch(setError(e.response.data.message[0]))
+      } else {
+        dispatch(setError(e.response.data.message))
+      }
+      dispatch(setIsLoading(false))
     }
+  }
 }

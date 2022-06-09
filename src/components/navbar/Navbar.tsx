@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "./navbar.scss";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout, setIsAuth } from "../../store/reducers/auth/action-creators";
+import { setIsAuth } from "../../store/reducers/auth/action-creators";
 import { useAppSelector } from "../../hooks";
-import GitHubButton from "react-github-btn";
 
 const Navbar: FC = () => {
   const navigate = useNavigate();
@@ -13,7 +12,6 @@ const Navbar: FC = () => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(logout());
     dispatch(setIsAuth(false));
     navigate("/login");
   };
@@ -38,7 +36,7 @@ const Navbar: FC = () => {
                 <button className={"loginButton"}>Log in</button>
               </Link>
               <Link to={"/register"}>
-                <button className={"signupButton"}>Create account</button>
+                <button className={"signupButton"}>Criar Conta</button>
               </Link>
             </>
           )}

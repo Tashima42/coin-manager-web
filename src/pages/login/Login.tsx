@@ -21,14 +21,14 @@ const Login: FC = () => {
     }, [dispatch])
 
     const onSubmit = (data: any) => {
-        dispatch(login(data.Email, data.Password))
+        dispatch(login(data.Username, data.Password))
     }
 
 
     return (
         <div className={'login'}>
             {isAuth && <Navigate to={'/'}/>}
-            <h2 className={'loginTitle'}>Welcome to Coin Manager</h2>
+            <h2 className={'loginTitle'}>Bem vindo ao Coin Manager</h2>
             <Hr dataContent={'Login'}/>
             {error && <div className={'registerError'}>
                 {error}
@@ -39,7 +39,7 @@ const Login: FC = () => {
                         fieldName={'Username'}
                         register={register}
                         errors={errors}
-                        placeholder={'Enter email...'}
+                        placeholder={'Enter username...'}
                         isRequired={true}
                     />
                     <FormGroup
@@ -54,7 +54,7 @@ const Login: FC = () => {
                         type={'submit'}
                         progress={isLoading ?
                             <CircularProgress style={{color: 'white'}} size={20}/> : null}
-                        text={'Continue'}
+                        text={'Continuar'}
                     />
                 </form>
             </div>

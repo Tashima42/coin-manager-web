@@ -1,26 +1,14 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import "./sidebar.scss";
-import HomeIcon from "@mui/icons-material/Home";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import StarIcon from "@mui/icons-material/Star";
-import PersonIcon from "@mui/icons-material/Person";
-import CreateIcon from "@mui/icons-material/Create";
 import InfoIcon from "@mui/icons-material/Info";
-import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import MailIcon from "@mui/icons-material/Mail";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import ModalWindow from "../modalWindow/ModalWindow";
-import { setSort } from "../../store/reducers/post/action-creators";
-import { PostSortActions } from "../../store/reducers/post/types";
 
 const Sidebar: FC = () => {
   const { isAuth } = useSelector((state: RootState) => state.auth);
-  const { sortType } = useSelector((state: RootState) => state.posts);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState<boolean>(false);
   const handleClick = (path: string) => {
     if (isAuth) {
@@ -36,30 +24,16 @@ const Sidebar: FC = () => {
       <div className={"menu bottom"}>
         <h4>Navigation</h4>
         <ul>
-          <Link to={"/"} className={"link"}>
-            <li>
-              <HomeIcon className={"sidebarIcon"} />
-              <span>Home</span>
-            </li>
-          </Link>
-          <li onClick={() => handleClick("profile")}>
-            <PersonIcon className={"sidebarIcon"} />
-            <span>Profile</span>
-          </li>
-          <li onClick={() => handleClick("create")}>
-            <CreateIcon className={"sidebarIcon"} />
-            <span>Make Post</span>
-          </li>
-          <Link to={"about"} className={"link"}>
+          <Link to={"collections"} className={"link"}>
             <li>
               <InfoIcon className={"sidebarIcon"} />
-              <span>About</span>
+              <span>Coleções</span>
             </li>
           </Link>
-          <Link to={"contact"} className={"link"}>
+          <Link to={"listings"} className={"link"}>
             <li>
-              <MailIcon className={"sidebarIcon"} />
-              <span>Contact</span>
+              <InfoIcon className={"sidebarIcon"} />
+              <span>Anúncios</span>
             </li>
           </Link>
         </ul>

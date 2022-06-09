@@ -1,0 +1,16 @@
+.collections {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.collection-cards {
+  width: 100%;
+}
+
+.collections-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}

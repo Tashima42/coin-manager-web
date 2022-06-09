@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import {FC, useEffect} from 'react';
 import './register.scss'
 import FormGroup from "../../components/common/formGroup/FormGroup";
 import Button from "../../components/common/button/Button";
@@ -21,7 +21,7 @@ const Register: FC  = () => {
     }, [dispatch])
 
     const onSubmit = (data: any) => {
-        dispatch(registration(data['First Name'], data['Last Name'],data['Email'],data['Password']))
+        dispatch(registration(data['Name'], data['Username'],data['Password']))
     }
 
     return (
@@ -34,6 +34,13 @@ const Register: FC  = () => {
             </div>}
             <div className={'loginForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <FormGroup
+                        fieldName={'Name'}
+                        register={register}
+                        errors={errors}
+                        placeholder={'Enter name...'}
+                        isRequired={true}
+                    />
                     <FormGroup
                         fieldName={'Username'}
                         register={register}
