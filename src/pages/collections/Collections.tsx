@@ -9,23 +9,31 @@ import CreateCollectionModal from "../../components/modals/createCollection/Crea
 const Collections: FC = () => {
   const collectionService = new CollectionService()
   const [collections, setCollections] = useState<any[]>([{id: 1, name: "Moedas Brasileiras", descriptions: "Moedas atuais do Brasil"}])
+  const [updated, setUpdated] = useState(false)
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    collectionService.userCollections().then(collections => {
-        if(collections[0].id) {
-          setCollections(collections)
-        }
-    })
+    if(!updated) {
+      updateCollections()
+      setUpdated(true)
+    }
   }, [])
 
-   const handleClick = () => {
+  function updateCollections() {
+    collectionService.userCollections().then((collections: any[]) => {
+      if(collections[0].id) {
+        setCollections(collections)
+      }
+    })
+  }
+
+ const handleClick = () => {
     setShowModal(true)
   }
 
   return (
     <div className={"collections"}>
-    <CreateCollectionModal setShowModal={setShowModal} showModal={showModal} />
+    <CreateCollectionModal setShowModal={setShowModal} showModal={showModal} updateCollections={updateCollections}/>
     <div className="collections-header">
       <h1>Coleções</h1>
       <div className="button-row">

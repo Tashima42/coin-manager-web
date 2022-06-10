@@ -7,18 +7,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import {Fade, CircularProgress} from "@mui/material";
 import FormGroup from "../../../components/common/formGroup/FormGroup";
 import {useForm} from "react-hook-form";
+import CollectionService from "../../../services/collection-service"
 
 
 interface CreateCollectionProps{
     showModal: boolean;
     setShowModal: (isOpen: boolean) => any;
+    updateCollections: Function
 }
 
-const CreateCollection: FC<CreateCollectionProps> = ({showModal, setShowModal}) => {
+const CreateCollection: FC<CreateCollectionProps> = ({showModal, setShowModal, updateCollections}) => {
+  const collectionService = new CollectionService()
     const {register, handleSubmit, formState: {errors}} = useForm()
     let isLoading = false
-    let error = null
-    const onSubmit = (data: any) => { }
+
+    const onSubmit = (data: any) => { 
+        isLoading = true
+        collectionService.create(data.Nome, data.Descricao).then(() => {
+            updateCollections()
+            setShowModal(false)
+        })
+    }
     return (
         <Modal
             aria-labelledby="transition-modal-title"

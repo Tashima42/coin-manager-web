@@ -16,8 +16,6 @@ const Listing: FC = () => {
     const id = useParams().id || '0';
     const navigate = useNavigate()
 
-    const coinService = new CoinService()
-    const listingService = new ListingService();
     const transactionService = new TransactionService()
 
     let isLoading = false
@@ -33,14 +31,14 @@ const Listing: FC = () => {
 
 
     useEffect(() => {
+      const listingService = new ListingService();
+      const coinService = new CoinService()
       const listing: IListing = listingService.getById(parseInt(id))
       coinService.getAll().then(coins => setCoins(coins))
       setListing(listing)
-      console.log(listing)
     }, [])
 
     const onSubmit = (data: any) => {
-      console.log(data)
       const listing_id = parseInt(id)
       const traded_coin_id = parseInt(data["Moeda de Troca"])
       const payment_mehtod = data["Metodo de pagamento"]
@@ -67,7 +65,7 @@ const Listing: FC = () => {
                             placeholder={'Adicione um valor...'}
                             isRequired={false}
                             type={'number'}
-                            min="1"
+                            min="0"
                             step="any"
                             value={listing?.askingPrice || ''}
                             readonly={true}

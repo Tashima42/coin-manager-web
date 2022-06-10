@@ -32,11 +32,11 @@ const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updat
     }, [])
 
     let isLoading = false
-    let error = null
     const onSubmit = () => {
         isLoading = true
         collectionService.addCoin(collectionId, coinId).then(() => {
             isLoading = false
+            updateCollectionAndCoins()
             setShowModal(false)
         })
     }
@@ -66,7 +66,6 @@ const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updat
                             />
                             <Button
                                 type={'submit'}
-                                handleClick={() => updateCollectionAndCoins()}
                                 progress={isLoading ?
                                     <CircularProgress style={{color: 'white'}} size={20}/> : null}
                                 text={'Adicionar'}

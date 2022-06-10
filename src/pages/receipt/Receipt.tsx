@@ -21,11 +21,12 @@ const Receipt: FC = () => {
   const [transaction, setTransaction] = useState<ITransaction>()
 
   useEffect(() => {
-    const listing = listingService.getById(parseInt(id))
-    setListing(listing)
-    transactionService.getByListingId(parseInt(id)).then((transaction: ITransaction) => {
-        setTransaction(transaction)
-        console.log(transaction)
+    listingService.getAll().then(() => {
+        const listing = listingService.getById(parseInt(id))
+        setListing(listing)
+        transactionService.getByListingId(parseInt(id)).then((transaction: ITransaction) => {
+            setTransaction(transaction)
+        })
     })
   }, [])
 

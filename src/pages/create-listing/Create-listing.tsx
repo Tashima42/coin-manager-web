@@ -1,4 +1,4 @@
-import { FC, useEffect} from 'react';
+import { FC, useState, useEffect } from 'react';
 import './create-listing.scss'
 import Button from "../../components/common/button/Button";
 import FormGroup from "../../components/common/formGroup/FormGroup";
@@ -6,16 +6,40 @@ import ComboBox from "../../components/common/ComboBox/ComboBox"
 import Hr from "../../components/common/hr/Hr";
 import {CircularProgress} from "@mui/material";
 import {useForm} from "react-hook-form";
+import ListingService from '../../services/listing-service';
+import CoinService from '../../services/coin-service';
+import {ICoin} from '../../types/coin-type';
+import { useNavigate } from "react-router-dom";
+
 
 const CreateListing: FC = () => {
+    const listingService = new ListingService()
+    const coinService = new CoinService()
+    const navigate = useNavigate()
+
     let isLoading = false
     let error = null
     const {register, handleSubmit, formState: {errors}} = useForm()
+    const [type, setType] = useState('sell')
+    const [coins, setCoins] = useState<ICoin[]>([])
+    const [coinId, setCoinId] = useState(1)
 
-    useEffect(() => {
+    useEffect(() => { 
+        coinService.getAll().then(coins => setCoins(coins))
     }, [])
 
     const onSubmit = (data: any) => {
+        isLoading = true
+        const askingPrice = data.Valor
+        const name = data["Titutlo"]
+        const description = data.Descricao
+        const trade = type === "trade"
+        const listedCoinId = coinId
+
+        listingService.create(askingPrice, name, description, trade, listedCoinId).then(() => {
+            isLoading = false
+            navigate('/listings')
+        })
     }
 
     return (
@@ -47,6 +71,7 @@ const CreateListing: FC = () => {
                         register={register}
                         errors={errors}
                         isRequired={true}
+                        onChange={(e: any) => setType(e.target.value)}
                         options={[{value: 'sell', displayText: 'Venda' }, {value: 'trade', displayText: 'Troca'}]}
                     />
                     <ComboBox
@@ -54,18 +79,22 @@ const CreateListing: FC = () => {
                         register={register}
                         errors={errors}
                         isRequired={true}
-                        options={[{value: 1, displayText: 'Moeda 1' }, {value: 2, displayText: 'Moeda 2'}]}
+                        onChange={(e: any) => setCoinId(e.target.value)}
+                        options={coins.map(coin => { return {value: coin.id, displayText: coin.name} })}
                     />
-                    <FormGroup
-                        fieldName={'Valor'}
-                        register={register}
-                        errors={errors}
-                        placeholder={'Adicione uma valor...'}
-                        isRequired={true}
-                        type={'number'}
-                        min="1"
-                        step="any"
-                    />
+                    {
+                      type === 'sell' &&
+                      <FormGroup
+                          fieldName={'Valor'}
+                          register={register}
+                          errors={errors}
+                          placeholder={'Adicione uma valor...'}
+                          isRequired={true}
+                          type={'number'}
+                          min="0"
+                          step="any"
+                      />
+                    }
                     <Button
                         type={'submit'}
                         progress={isLoading ?

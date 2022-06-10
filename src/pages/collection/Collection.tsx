@@ -63,8 +63,8 @@ const Collection: FC = () => {
     </div>
         <div className="coins-list">
         {
-          coins.map((coin: ICoin) => {
-            return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={coin.id}/>
+          coins.map((coin: ICoin, id: number) => {
+            return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={id}/>
           })
         }
       </div>

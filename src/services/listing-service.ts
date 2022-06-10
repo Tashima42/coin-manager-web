@@ -11,4 +11,7 @@ export default class ListingService {
     const listings = JSON.parse(localStorage.getItem("listings") || "[]")
     return listings.find((listing: IListing) => listing.id === id)
   }
+  async create(askingPrice: string, name: string, description: string, trade: boolean, listedCoinId: number): Promise<void> {
+    await api.post(`/listing/create`, {askingPrice, name, description, trade, listedCoinId})
+  }
 }

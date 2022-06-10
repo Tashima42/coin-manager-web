@@ -15,6 +15,9 @@ export default class CollectionService {
     return collection
   }
   async addCoin(collection_id: number, coin_id: number): Promise<void> {
-    const {data: {success}} = await api.post(`/collection/${collection_id}/coin/${coin_id}`)
+    await api.post(`/collection/${collection_id}/coin/${coin_id}`)
+  }
+  async create(name: string, description: string): Promise<void> {
+    await api.post(`/collection/create`, {name, description})
   }
 }
