@@ -4,29 +4,53 @@ import Card from "../../components/card/Card"
 import { useParams } from "react-router-dom";
 import Button from "../../components/common/button/Button"
 import CollectionService from "../../services/collection-service"
+import CoinService from "../../services/coin-service";
 import {ICollection} from "../../types/collection-type";
 import AddCoinModal from "../../components/modals/addCoin/AddCoin";
+import NameDescriptionModal from "../../components/modals/nameDescription/nameDescription";
+import {ICoin} from "../../types/coin-type";
 
 const Collection: FC = () => {
   const collectionService = new CollectionService()
+  const coinService = new CoinService()
+
   const id = useParams().id || '0';
 
   const [collection, setCollection] = useState<ICollection>()
+  const [coins, setCoins] = useState<ICoin[]>([])
   const [showModal, setShowModal] = useState(false)
+  const [showPriceModal, setShowPriceModal] = useState(false)
+  const [totalPrice, setTotalPrice] = useState('0')
 
   useEffect(() => {
-    collectionService.getById(parseInt(id)).then((collection: ICollection) => {
-      setCollection(collection)
-    }).catch(err => console.error(err))
+    updateCollectionAndCoins()
   }, [])
 
    const handleClick = () => {
     setShowModal(true)
   }
 
+ function updateCollectionAndCoins() {
+    collectionService.getById(parseInt(id)).then((collection: ICollection) => {
+      setCollection(collection)
+    }).catch(err => console.error(err))
+    coinService.getByCollectionId(parseInt(id)).then((coins: ICoin[]) => {
+      setCoins(coins)
+    }).catch(err => console.error(err))
+ }
+
+   const handleCalculatePrice = () => {
+     const total = coins.reduce((acc, coin) => {
+       return acc + parseFloat(coin.price)
+     }, 0)
+    setTotalPrice(total.toFixed(2))
+    setShowPriceModal(true)
+   }
+
   return (
     <div className={"collection"}>
-    <AddCoinModal setShowModal={setShowModal} showModal={showModal} />
+    <AddCoinModal setShowModal={setShowModal} showModal={showModal} collectionId={parseInt(id)} updateCollectionAndCoins={updateCollectionAndCoins}/>
+    <NameDescriptionModal setShowModal={setShowPriceModal} showModal={showPriceModal} name="Preco total" description={"Preco somado de todas as moedas da colecao: R$" + totalPrice.toString()}/>
     <div className="collection-header">
     <div className="collection-info">
       <h1>{collection?.name}</h1>
@@ -34,13 +58,16 @@ const Collection: FC = () => {
     </div>
         <div className="button-column">
           <Button handleClick={() => handleClick()} text="Adicionar moeda"/>
-          <Button text="Calcular preço"/>
+          <Button handleClick={() => handleCalculatePrice()} text="Calcular preço"/>
         </div>
     </div>
         <div className="coins-list">
-          <Card name="Coin Japan" description="Description"/>
-          <Card name="Coin Japan" description="Description"/>
-        </div>
+        {
+          coins.map((coin: ICoin) => {
+            return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={coin.id}/>
+          })
+        }
+      </div>
     </div>
   );
 };

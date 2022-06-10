@@ -27,11 +27,13 @@ const Listings: FC = () => {
       </div>
     </div>
       {listings.map((listing) => {
-        return (
-              <Link key={listing.id} to={`/listing/${listing.id}`} className={"link"}>
-                <Card  name={listing.name} description={listing.description} key={listing.id}/>
-              </Link>
-            )
+        if(listing.enabled === true) {
+          return (
+                <Link key={listing.id} to={`/listing/${listing.id}`} className={"link"}>
+                  <Card  name={listing.name} description={listing.description} key={listing.id}/>
+                </Link>
+              )
+        }
         })}
     </div>
   );

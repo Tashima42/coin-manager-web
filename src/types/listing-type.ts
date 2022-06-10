@@ -5,6 +5,8 @@ export interface IListing {
   askingPrice: string;
   name: string;
   description: string;
+  enabled: boolean;
+  trade: boolean;
   listedCoin: ICoin | null;
-  tradedCoin?: ICoin;
+  tradedCoin: ICoin;
 }

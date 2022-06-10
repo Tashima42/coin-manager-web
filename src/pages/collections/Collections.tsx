@@ -8,12 +8,14 @@ import CreateCollectionModal from "../../components/modals/createCollection/Crea
 
 const Collections: FC = () => {
   const collectionService = new CollectionService()
-  const [collections, setCollections] = useState<any[]>([])
+  const [collections, setCollections] = useState<any[]>([{id: 1, name: "Moedas Brasileiras", descriptions: "Moedas atuais do Brasil"}])
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     collectionService.userCollections().then(collections => {
-      setCollections(collections)
+        if(collections[0].id) {
+          setCollections(collections)
+        }
     })
   }, [])
 

@@ -54,3 +54,8 @@
   }
 }
 
+@media print {
+  .receipt-footer {
+    display: none;
+  }
+}

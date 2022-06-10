@@ -13,4 +13,8 @@ export default class CoinService {
     const coins = JSON.parse(localStorage.getItem("coins") || "[]")
     return coins.find((coin: ICoin) => coin.id === id)
   }
+  async getByCollectionId(id: number): Promise<Array<ICoin>> {
+    const {data: {coins}} = await api.get(`/collection/${id}/coin/all`)
+    return coins
+  }
 }

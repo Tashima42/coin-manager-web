@@ -1,0 +1,16 @@
+.transactions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.transaction-cards {
+  width: 100%;
+}
+
+.transactions-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}

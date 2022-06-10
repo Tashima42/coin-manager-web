@@ -1,36 +1,39 @@
 import { FC, useState } from "react";
 import "./sidebar.scss";
-import InfoIcon from "@mui/icons-material/Info";
-import { Link, useNavigate } from "react-router-dom";
-import ModalWindow from "../modalWindow/ModalWindow";
+import CategoryIcon from "@mui/icons-material/Category";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import { Link } from "react-router-dom";
 
 const Sidebar: FC = () => {
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const handleClick = (path: string) => {
-    if (true) {
-      return navigate(`/${path}`);
-    } else {
-      setShowModal(true);
-    }
-  };
-
   return (
     <div className={"sidebar"}>
-      <ModalWindow setShowModal={setShowModal} showModal={showModal} />
       <div className={"menu bottom"}>
-        <h4>Navigation</h4>
+        <h4>Navegacao</h4>
         <ul>
           <Link to={"collections"} className={"link"}>
             <li>
-              <InfoIcon className={"sidebarIcon"} />
+              <CategoryIcon className={"sidebarIcon"} />
               <span>Coleções</span>
             </li>
           </Link>
           <Link to={"listings"} className={"link"}>
             <li>
-              <InfoIcon className={"sidebarIcon"} />
+              <StorefrontIcon className={"sidebarIcon"} />
               <span>Anúncios</span>
+            </li>
+          </Link>
+          <Link to={"transactions"} className={"link"}>
+            <li>
+              <ReceiptLongIcon className={"sidebarIcon"} />
+              <span>Transacoes</span>
+            </li>
+          </Link>
+          <Link to={"receipts"} className={"link"}>
+            <li>
+              <ReceiptIcon className={"sidebarIcon"} />
+              <span>Recibos</span>
             </li>
           </Link>
         </ul>

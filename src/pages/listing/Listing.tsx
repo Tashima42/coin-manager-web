@@ -4,32 +4,50 @@ import Button from "../../components/common/button/Button";
 import FormGroup from "../../components/common/formGroup/FormGroup";
 import ComboBox from "../../components/common/ComboBox/ComboBox"
 import {CircularProgress} from "@mui/material";
-import {Navigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import ListingService from "../../services/listing-service";
+import TransactionService from '../../services/transaction-service';
+import CoinService from '../../services/coin-service';
 import {IListing} from '../../types/listing-type';
+import { ICoin } from '../../types/coin-type';
 
 const Listing: FC = () => {
     const id = useParams().id || '0';
+    const navigate = useNavigate()
+
+    const coinService = new CoinService()
+    const listingService = new ListingService();
+    const transactionService = new TransactionService()
 
     let isLoading = false
     let error = null
 
     const {register, handleSubmit, formState: {errors}} = useForm()
-    const [listing, setListing] = useState<IListing>({ askingPrice: '0', description: '', name: '', id: 0, listedCoin: null })
-    const [listingTypeInfo, setListingTypeInfo] = useState<any>({ value: 'sell', displayText: 'Venda' })
+    const [listing, setListing] = useState<IListing>({ 
+    id: 1, name: '', description: '', askingPrice: '', enabled: true, trade: false,
+      listedCoin: { id: 1, name: '', price: '', year: 0, image: '' }, 
+      tradedCoin: { id: 1, name: '', price: '', year: 0, image: '' }
+    })
+    const [coins, setCoins] = useState<ICoin[]>([])
 
-    const listingService = new ListingService();
 
     useEffect(() => {
       const listing: IListing = listingService.getById(parseInt(id))
+      coinService.getAll().then(coins => setCoins(coins))
       setListing(listing)
-      if(listing.tradedCoin !== null) { 
-        setListingTypeInfo({value: 'trade', displayText: 'Troca'})
-      } 
+      console.log(listing)
     }, [])
 
     const onSubmit = (data: any) => {
+      console.log(data)
+      const listing_id = parseInt(id)
+      const traded_coin_id = parseInt(data["Moeda de Troca"])
+      const payment_mehtod = data["Metodo de pagamento"]
+
+      transactionService.create(listing_id, payment_mehtod, traded_coin_id).then(() => {
+        navigate('/receipt/' + id)
+      })
     }
 
     return (
@@ -41,13 +59,13 @@ const Listing: FC = () => {
             <div className={'listingForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     {
-                      listingTypeInfo.value === 'sell' &&
+                      listing.trade === false &&
                         <FormGroup
                             fieldName={'Valor'}
                             register={register}
                             errors={errors}
                             placeholder={'Adicione um valor...'}
-                            isRequired={true}
+                            isRequired={false}
                             type={'number'}
                             min="1"
                             step="any"
@@ -59,34 +77,38 @@ const Listing: FC = () => {
                         fieldName={'Tipo'}
                         register={register}
                         errors={errors}
-                        isRequired={true}
+                        isRequired={false}
+                        onChange={() => {}}
                         readonly={true}
-                        options={[listingTypeInfo]}
+                        options={[{ value: listing.trade ? 'trade' : 'sell', displayText: listing.trade ? 'Troca' : 'Venda' }]}
                     />
                     <ComboBox
                         fieldName={'Moeda'}
                         register={register}
                         errors={errors}
-                        isRequired={true}
+                        onChange={() => {}}
+                        isRequired={false}
                         readonly={true}
                         options={[{value: listing.listedCoin?.id, displayText: listing?.listedCoin?.name }]}
                     />
                     {
-                        listingTypeInfo.value === 'trade' &&
+                        listing.trade === true &&
                           <ComboBox
                             fieldName={'Moeda de Troca'}
                             register={register}
                             errors={errors}
+                            onChange={() => {}}
                             isRequired={false}
-                            options={[{value: 1, displayText: 'Moeda 1' }, {value: 2, displayText: 'Moeda 2'}]}
+                            options={coins.map(coin => { return {value: coin.id, displayText: coin.name} })}
                         />
                     }
                     {
-                      listingTypeInfo.value === 'sell' &&
+                      listing.trade === false &&
                       <ComboBox
                           fieldName={'Metodo de pagamento'}
                           register={register}
                           errors={errors}
+                          onChange={() => {}}
                           isRequired={true}
                           options={[{value: 'credit-card', displayText: 'Cartao de Credito' }, {value: 'pix', displayText: 'Pix'}]}
                       />

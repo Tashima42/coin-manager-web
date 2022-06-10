@@ -1,7 +1,7 @@
-.modalAddCoin{
+.modalNameDescription{
   background-color: white;
-  width: 600px;
-  height: 230px;
+  width: 500px;
+  height: 120px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -9,7 +9,7 @@
   border-radius: 20px;
   padding: 20px;
 
-  .modalAddCoinTitle{
+  .modalNameDescriptionTitle{
     border-bottom: 1px solid #c5c4c4;
     display: flex;
     align-items: center;

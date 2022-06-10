@@ -9,18 +9,23 @@ import ComboBox from "../../common/ComboBox/ComboBox"
 import {useForm} from "react-hook-form";
 import {ICoin} from "../../../types/coin-type"
 import CoinService from "../../../services/coin-service"
+import CollectionService from "../../../services/collection-service"
 
 
-interface ModalWindowProps{
+interface AddCoinProps{
     showModal: boolean;
     setShowModal: (isOpen: boolean) => any;
+    collectionId: number;
+    updateCollectionAndCoins: Function;
 }
 
-const AddCoin: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
+const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updateCollectionAndCoins}) => {
     const {register, handleSubmit, formState: {errors}} = useForm()
+    const collectionService = new CollectionService()
     const coinService = new CoinService()
 
     const [coins, setCoins] = useState<ICoin[]>([])
+    const [coinId, setCoinId] = useState<number>(1)
 
     useEffect(() => { 
         coinService.getAll().then(coins => setCoins(coins))
@@ -28,7 +33,13 @@ const AddCoin: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
 
     let isLoading = false
     let error = null
-    const onSubmit = (data: any) => { }
+    const onSubmit = () => {
+        isLoading = true
+        collectionService.addCoin(collectionId, coinId).then(() => {
+            isLoading = false
+            setShowModal(false)
+        })
+    }
     return (
         <Modal
             aria-labelledby="transition-modal-title"
@@ -50,13 +61,15 @@ const AddCoin: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
                                 register={register}
                                 errors={errors}
                                 isRequired={true}
+                                onChange={(e: any) => setCoinId(parseInt(e.target.value))}
                                 options={coins.map(coin => { return {value: coin.id, displayText: coin.name} })}
                             />
                             <Button
                                 type={'submit'}
+                                handleClick={() => updateCollectionAndCoins()}
                                 progress={isLoading ?
                                     <CircularProgress style={{color: 'white'}} size={20}/> : null}
-                                text={'Criar'}
+                                text={'Adicionar'}
                             />
                         </form>
                     </div>

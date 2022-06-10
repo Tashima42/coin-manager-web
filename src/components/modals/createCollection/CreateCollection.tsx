@@ -9,12 +9,12 @@ import FormGroup from "../../../components/common/formGroup/FormGroup";
 import {useForm} from "react-hook-form";
 
 
-interface ModalWindowProps{
+interface CreateCollectionProps{
     showModal: boolean;
     setShowModal: (isOpen: boolean) => any;
 }
 
-const ModalWindow: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
+const CreateCollection: FC<CreateCollectionProps> = ({showModal, setShowModal}) => {
     const {register, handleSubmit, formState: {errors}} = useForm()
     let isLoading = false
     let error = null
@@ -63,5 +63,5 @@ const ModalWindow: FC<ModalWindowProps> = ({showModal, setShowModal}) => {
         </Modal>
     );
 }
-export default ModalWindow
+export default CreateCollection
 
