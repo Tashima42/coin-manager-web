@@ -10,6 +10,8 @@ import {useForm} from "react-hook-form";
 import {ICoin} from "../../../types/coin-type"
 import CoinService from "../../../services/coin-service"
 import CollectionService from "../../../services/collection-service"
+import NameDescriptionModal from "../nameDescription/nameDescription"
+import {ICollection} from "../../../types/collection-type"
 
 
 interface AddCoinProps{
@@ -20,12 +22,16 @@ interface AddCoinProps{
 }
 
 const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updateCollectionAndCoins}) => {
+
+    const [showAdditionalModal, setShowAdditionalModal] = useState(false)
     const {register, handleSubmit, formState: {errors}} = useForm()
     const collectionService = new CollectionService()
     const coinService = new CoinService()
 
     const [coins, setCoins] = useState<ICoin[]>([])
     const [coinId, setCoinId] = useState<number>(1)
+    const [coinName, setCoinName] = useState<string>("")
+    const [collectionName, setCollectionName] = useState<string>("")
 
     useEffect(() => { 
         coinService.getAll().then(coins => setCoins(coins))
@@ -35,12 +41,25 @@ const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updat
     const onSubmit = () => {
         isLoading = true
         collectionService.addCoin(collectionId, coinId).then(() => {
+            const coinName = coins.find(coin => coin.id === coinId)?.name || ""
+            setCoinName(coinName)
+            collectionService.getById(collectionId).then((collection: ICollection) => {
+              setCollectionName(collection.name)
+            })
             isLoading = false
             updateCollectionAndCoins()
+            setShowAdditionalModal(true)
             setShowModal(false)
         })
     }
     return (
+    <div>
+        <NameDescriptionModal 
+          setShowModal={setShowAdditionalModal} 
+          showModal={showAdditionalModal} 
+          name="Moeda adicionada" 
+          description={"Voce adicionou a moeda " + coinName + " na colecao " + collectionName}
+          />
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -74,6 +93,7 @@ const AddCoin: FC<AddCoinProps> = ({showModal, setShowModal, collectionId, updat
                     </div>
                 </Fade>
         </Modal>
+    </div>
     );
 }
 export default AddCoin

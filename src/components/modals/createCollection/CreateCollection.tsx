@@ -1,6 +1,6 @@
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
-import {FC} from "react";
+import {FC, useState} from "react";
 import './createCollection.scss'
 import Button from "../../common/button/Button";
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,6 +8,7 @@ import {Fade, CircularProgress} from "@mui/material";
 import FormGroup from "../../../components/common/formGroup/FormGroup";
 import {useForm} from "react-hook-form";
 import CollectionService from "../../../services/collection-service"
+import NameDescriptionModal from "../nameDescription/nameDescription"
 
 
 interface CreateCollectionProps{
@@ -20,15 +21,26 @@ const CreateCollection: FC<CreateCollectionProps> = ({showModal, setShowModal, u
   const collectionService = new CollectionService()
     const {register, handleSubmit, formState: {errors}} = useForm()
     let isLoading = false
+    const [showAdditionalModal, setShowAdditionalModal] = useState(false)
+    const [collectionName, setCollectionName] = useState<string>("")
 
     const onSubmit = (data: any) => { 
         isLoading = true
+        setCollectionName(data.Nome)
         collectionService.create(data.Nome, data.Descricao).then(() => {
             updateCollections()
+            setShowAdditionalModal(true)
             setShowModal(false)
         })
     }
     return (
+    <div>
+        <NameDescriptionModal 
+          setShowModal={setShowAdditionalModal} 
+          showModal={showAdditionalModal} 
+          name="Colecao criada" 
+          description={"Voce criou a colecao " + collectionName}
+          />
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -70,6 +82,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({showModal, setShowModal, u
                     </div>
                 </Fade>
         </Modal>
+    </div>
     );
 }
 export default CreateCollection

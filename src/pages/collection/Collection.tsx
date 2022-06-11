@@ -9,6 +9,7 @@ import {ICollection} from "../../types/collection-type";
 import AddCoinModal from "../../components/modals/addCoin/AddCoin";
 import NameDescriptionModal from "../../components/modals/nameDescription/nameDescription";
 import {ICoin} from "../../types/coin-type";
+import {CircularProgress} from "@mui/material";
 
 const Collection: FC = () => {
   const collectionService = new CollectionService()
@@ -21,6 +22,7 @@ const Collection: FC = () => {
   const [showModal, setShowModal] = useState(false)
   const [showPriceModal, setShowPriceModal] = useState(false)
   const [totalPrice, setTotalPrice] = useState('0')
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     updateCollectionAndCoins()
@@ -33,9 +35,11 @@ const Collection: FC = () => {
  function updateCollectionAndCoins() {
     collectionService.getById(parseInt(id)).then((collection: ICollection) => {
       setCollection(collection)
+      setIsLoading(false)
     }).catch(err => console.error(err))
     coinService.getByCollectionId(parseInt(id)).then((coins: ICoin[]) => {
       setCoins(coins)
+      setIsLoading(false)
     }).catch(err => console.error(err))
  }
 
@@ -61,11 +65,14 @@ const Collection: FC = () => {
           <Button handleClick={() => handleCalculatePrice()} text="Calcular preço"/>
         </div>
     </div>
+        { isLoading === true ? <CircularProgress style={{color: 'black'}} size={50}/>: null }
         <div className="coins-list">
         {
-          coins.map((coin: ICoin, id: number) => {
-            return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={id}/>
-          })
+          isLoading !== true ? 
+            coins.map((coin: ICoin, id: number) => {
+              return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={id}/>
+            })
+            : null
         }
       </div>
     </div>

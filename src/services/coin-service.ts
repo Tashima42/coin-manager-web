@@ -18,3 +18,4 @@ export default class CoinService {
     return coins
   }
 }
+

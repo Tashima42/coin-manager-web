@@ -11,7 +11,7 @@ export default class CollectionService {
     }
   }
   async getById(id: number): Promise<ICollection> {
-    const {data: collection} = await api.get(`/collection/${id}`)
+    const {data: {collection}} = await api.get(`/collection/${id}`)
     return collection
   }
   async addCoin(collection_id: number, coin_id: number): Promise<void> {

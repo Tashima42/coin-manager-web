@@ -1,4 +1,4 @@
-import { FC, useEffect} from 'react';
+import { FC} from 'react';
 import './login.scss'
 import Button from "../../components/common/button/Button";
 import FormGroup from "../../components/common/formGroup/FormGroup";

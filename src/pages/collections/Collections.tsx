@@ -5,12 +5,14 @@ import Card from "../../components/card/Card"
 import Button from "../../components/common/button/Button"
 import CollectionService from "../../services/collection-service"
 import CreateCollectionModal from "../../components/modals/createCollection/CreateCollection"
+import {CircularProgress} from "@mui/material";
 
 const Collections: FC = () => {
   const collectionService = new CollectionService()
-  const [collections, setCollections] = useState<any[]>([{id: 1, name: "Moedas Brasileiras", descriptions: "Moedas atuais do Brasil"}])
+  const [collections, setCollections] = useState<any[]>([{id: 1, name: "", descriptions: ""}])
   const [updated, setUpdated] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if(!updated) {
@@ -20,8 +22,10 @@ const Collections: FC = () => {
   }, [])
 
   function updateCollections() {
+    setIsLoading(true)
     collectionService.userCollections().then((collections: any[]) => {
       if(collections[0].id) {
+        setIsLoading(false)
         setCollections(collections)
       }
     })
@@ -41,13 +45,17 @@ const Collections: FC = () => {
       </div>
     </div>
       <div className="collection-cards">
-      {collections.map((collection) => {
+      { isLoading ? <CircularProgress style={{color: 'black'}} size={50}/>: null }
+      {
+        isLoading !== true &&
+        collections.map((collection) => {
           return (
                 <Link key={collection.id} to={`/collection/${collection.id}`} className={"link"}>
                   <Card  name={collection.name} description={collection.description} key={collection.id}/>
                 </Link>
               )
-          })}
+          })
+        }
       </div>
     </div>
   );
