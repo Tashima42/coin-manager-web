@@ -7,6 +7,7 @@ import CollectionService from "../../services/collection-service"
 import CoinService from "../../services/coin-service";
 import {ICollection} from "../../types/collection-type";
 import AddCoinModal from "../../components/modals/addCoin/AddCoin";
+import CoinModal from "../../components/modals/coin/Coin"
 import NameDescriptionModal from "../../components/modals/nameDescription/nameDescription";
 import {ICoin} from "../../types/coin-type";
 import {CircularProgress} from "@mui/material";
@@ -17,10 +18,14 @@ const Collection: FC = () => {
 
   const id = useParams().id || '0';
 
+  const coinModel: ICoin = {id: 0, name: '', price: '', image: '', year: 0}
+
   const [collection, setCollection] = useState<ICollection>()
   const [coins, setCoins] = useState<ICoin[]>([])
+  const [coinToModal, setCoinToModal] = useState<ICoin>(coinModel)
   const [showModal, setShowModal] = useState(false)
   const [showPriceModal, setShowPriceModal] = useState(false)
+  const [showCoinModal, setShowCoinModal] = useState(false)
   const [totalPrice, setTotalPrice] = useState('0')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -30,6 +35,10 @@ const Collection: FC = () => {
 
    const handleClick = () => {
     setShowModal(true)
+  }
+  const handleCoinClick = (coin: ICoin) => {
+    setCoinToModal(coin)
+    setShowCoinModal(true) 
   }
 
  function updateCollectionAndCoins() {
@@ -54,6 +63,7 @@ const Collection: FC = () => {
   return (
     <div className={"collection"}>
     <AddCoinModal setShowModal={setShowModal} showModal={showModal} collectionId={parseInt(id)} updateCollectionAndCoins={updateCollectionAndCoins}/>
+    <CoinModal setShowModal={setShowCoinModal} showModal={showCoinModal} coin={coinToModal}/>
     <NameDescriptionModal setShowModal={setShowPriceModal} showModal={showPriceModal} name="Preco total" description={"Preco somado de todas as moedas da colecao: R$" + totalPrice.toString()}/>
     <div className="collection-header">
     <div className="collection-info">
@@ -70,7 +80,7 @@ const Collection: FC = () => {
         {
           isLoading !== true ? 
             coins.map((coin: ICoin, id: number) => {
-              return <Card name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={id}/>
+              return <Card onClick={() => {handleCoinClick(coin)}} name={coin.name} description={"Ano: " + coin.year.toString() + " | Preco: R$" + coin.price} key={id}/>
             })
             : null
         }

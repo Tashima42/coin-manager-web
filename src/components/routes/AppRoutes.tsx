@@ -21,7 +21,7 @@ const AppRoutes: FC = () => {
   return (
     <Routes>
       <Route path={"/"}>
-        <Route index element={<Collections />} />
+        <Route index element={<Login />} />
         <Route path={"collections"} element={<Collections />} />
         <Route path="collection/:id" element={<Collection />} />
         <Route path={"listings"} element={<Listings />} />
