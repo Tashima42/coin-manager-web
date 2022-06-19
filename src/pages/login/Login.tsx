@@ -29,7 +29,7 @@ const Login: FC = () => {
 
     return (
         <div className={'login'}>
-            <h2 className={'loginTitle'}>Bem vindo ao Coin Manager</h2>
+            <h2 className={'loginTitle'}>Bem vindo ao Double Coin</h2>
             <Hr dataContent={'Login'}/>
             <div className={'loginForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>

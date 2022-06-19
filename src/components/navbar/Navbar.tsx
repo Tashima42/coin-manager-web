@@ -19,7 +19,7 @@ const Navbar: FC = () => {
         <div className={"left"}>
           <AttachMoneyIcon className={"icon"} />
           <Link to={"/"} className={"link"}>
-            <h1 className={"title"}>Coin Manager</h1>
+            <h1 className={"title"}>Double Coin</h1>
           </Link>
         </div>
         <div className={"right"}>

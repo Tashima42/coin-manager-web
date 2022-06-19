@@ -28,7 +28,7 @@ const Register: FC  = () => {
 
     return (
         <div className={'login'}>
-            <h2 className={'loginTitle'}>Welcome to Coin Manager</h2>
+            <h2 className={'loginTitle'}>Bem vindo ao Double Coin</h2>
             <Hr dataContent={'Register'}/>
             <div className={'loginForm'}>
                 <form onSubmit={handleSubmit(onSubmit)}>
